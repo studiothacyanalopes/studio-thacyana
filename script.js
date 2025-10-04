@@ -14,26 +14,22 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("form-agendamento");
   const dataInput = document.getElementById("data");
   const horarioSelect = document.getElementById("horario");
   const mensagem = document.getElementById("mensagem");
   const btnDesmarcar = document.getElementById("btn-desmarcar");
   const horariosFixos = ["08:00", "10:00", "13:00", "15:00", "17:00"];
-  const numeroStudio = "5562995446258";
+  const numeroStudio = "5562995446258"; // WhatsApp do Studio
 
-  // Função para limpar select
   function limparSelect() {
     horarioSelect.innerHTML = '<option value="">Selecione um horário</option>';
   }
 
-  // Função para renderizar horários
   async function renderizarHorarios() {
     const dataSelecionada = dataInput.value;
     const clienteAtual = document.getElementById("whatsapp").value.replace(/\D/g, "");
-    const horaSelecionadaAntes = horarioSelect.value;
-
     limparSelect();
 
     if (!dataSelecionada) {
@@ -41,13 +37,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    const dataFormatada = dataSelecionada.trim();
-    const q = query(collection(db, "agendamentos"), where("data", "==", dataFormatada));
+    const q = query(collection(db, "agendamentos"), where("data", "==", dataSelecionada));
     const snapshot = await getDocs(q);
     const ocupados = snapshot.docs.map(doc => doc.data());
-
-    // Verifica se o cliente já tem agendamento nesse dia
-    const ocupadoCliente = ocupados.find(a => a.whatsapp === clienteAtual);
 
     horariosFixos.forEach(hora => {
       const option = document.createElement("option");
@@ -61,14 +53,8 @@ document.addEventListener("DOMContentLoaded", async () => {
           option.textContent += " (indisponível)";
         } else {
           option.textContent += " (seu horário)";
+          option.selected = true;
         }
-      }
-
-      // Seleciona horário previamente escolhido ou do próprio cliente
-      if (hora === horaSelecionadaAntes && !option.disabled) {
-        option.selected = true;
-      } else if (hora === ocupadoCliente?.hora) {
-        option.selected = true;
       }
 
       horarioSelect.appendChild(option);
@@ -76,13 +62,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // Preenche WhatsApp salvo
-  const clienteSalvo = localStorage.getItem("clienteAtual");
-  if (clienteSalvo) document.getElementById("whatsapp").value = clienteSalvo;
+  const clienteAtual = localStorage.getItem("clienteAtual");
+  if (clienteAtual) document.getElementById("whatsapp").value = clienteAtual;
+  renderizarHorarios();
 
-  // Renderiza horários se data já preenchida
-  if (dataInput.value) await renderizarHorarios();
-
-  // Atualiza horários quando muda a data
   dataInput.addEventListener("change", renderizarHorarios);
 
   // 💾 Agendamento
@@ -92,7 +75,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const nome = document.getElementById("nome").value.trim();
     const whatsapp = document.getElementById("whatsapp").value.replace(/\D/g, "");
     const servico = document.getElementById("servico").value;
-    const data = dataInput.value.trim();
+    const data = dataInput.value;
     const hora = horarioSelect.value;
 
     if (!nome || !whatsapp || !servico || !data || !hora) {
@@ -102,15 +85,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     localStorage.setItem("clienteAtual", whatsapp);
 
-    // Mensagem pro Studio
+    // Abrir WhatsApp imediatamente (popup do navegador exige evento direto de clique)
     const msgStudio = `💅 *Novo Agendamento* 💕%0A👤 Nome: ${nome}%0A📞 WhatsApp: ${whatsapp}%0A💄 Serviço: ${servico}%0A📅 Data: ${data}%0A⏰ Horário: ${hora}`;
-    window.open(`https://wa.me/${numeroStudio}?text=${msgStudio}`, "_blank");
+    const studioWindow = window.open(`https://wa.me/${numeroStudio}?text=${msgStudio}`, "_blank");
 
-    // Mensagem pro Cliente
     const msgCliente = `✨ Olá ${nome}! Seu agendamento no Studio Thacyana Lopes foi confirmado! 💅%0A📅 Data: ${data}%0A⏰ Horário: ${hora}%0A💄 Serviço: ${servico}%0A💖 Esperamos por você!`;
-    window.open(`https://wa.me/55${whatsapp}?text=${msgCliente}`, "_blank");
+    const clienteWindow = window.open(`https://wa.me/55${whatsapp}?text=${msgCliente}`, "_blank`);
 
     try {
+      // Salvar no Firestore em paralelo, sem travar o WhatsApp
       await addDoc(collection(db, "agendamentos"), { nome, whatsapp, servico, data, hora });
       mensagem.textContent = "✅ Agendamento confirmado com sucesso!";
       renderizarHorarios();
@@ -124,7 +107,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // ❌ Desmarcar horário
   btnDesmarcar.addEventListener("click", async () => {
     const whatsapp = document.getElementById("whatsapp").value.replace(/\D/g, "");
-    const data = dataInput.value.trim();
+    const data = dataInput.value;
 
     if (!whatsapp || !data) {
       alert("Preencha o WhatsApp e selecione a data!");
@@ -142,6 +125,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       for (const docSnap of snapshot.docs) {
         await deleteDoc(doc(db, "agendamentos", docSnap.id));
 
+        // Mensagem pro Studio
         const a = docSnap.data();
         const msgStudio = `❌ *Cancelamento* ❌%0A👤 Nome: ${a.nome}%0A📞 WhatsApp: ${a.whatsapp}%0A💄 Serviço: ${a.servico}%0A📅 Data: ${a.data}%0A⏰ Horário: ${a.hora}`;
         window.open(`https://wa.me/${numeroStudio}?text=${msgStudio}`, "_blank");
