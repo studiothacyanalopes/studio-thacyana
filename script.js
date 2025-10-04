@@ -35,10 +35,13 @@ function renderizarHorarios() {
 
     if (ocupacao) {
       if (ocupacao.whatsapp !== clienteAtual) {
+        // horário ocupado por outro cliente → bloqueia
         option.disabled = true;
         option.textContent += " (indisponível)";
       } else {
+        // horário do próprio cliente → habilita e já seleciona
         option.textContent += " (seu horário)";
+        option.selected = true;
       }
     }
 
@@ -51,13 +54,13 @@ dataInput.addEventListener("change", () => {
   renderizarHorarios();
 });
 
-// ao carregar página, preenche WhatsApp se existir
+// ao carregar página, preenche WhatsApp se existir e renderiza horários
 window.addEventListener("load", () => {
   const clienteAtual = localStorage.getItem("clienteAtual");
   if (clienteAtual) {
     document.getElementById("whatsapp").value = clienteAtual;
   }
-  renderizarHorarios(); // garante que o próprio horário apareça
+  renderizarHorarios(); 
 });
 
 // evento de agendamento
@@ -136,13 +139,13 @@ btnDesmarcar.addEventListener("click", () => {
     // mensagem para studio com nome e serviço
     encontrados.forEach(a => {
       const msgStudio = `❌ *Cancelamento - Studio Thacyana Lopes* ❌%0A%0A👤 Nome: ${a.nome}%0A📞 WhatsApp: ${a.whatsapp}%0A💄 Serviço: ${a.servico}%0A📅 Data: ${data}%0A⏰ Horário: ${a.hora}`;
-      window.open(`https://wa.me/5562995446258?text=${msgStudio}`, "_blank");
+      window.open(`https://wa.me/5562995446258?text=${msgStudio}`, "_blank`);
     });
 
     // mensagem para cliente
     const msgCliente = `⚠️ Olá! Seu(s) horário(s) no Studio Thacyana Lopes foram desmarcados para o dia ${data}.`;
     setTimeout(() => {
-      window.open(`https://wa.me/55${whatsapp}?text=${msgCliente}`, "_blank");
+      window.open(`https://wa.me/55${whatsapp}?text=${msgCliente}`, "_blank`);
     }, 1500);
   }
 });
