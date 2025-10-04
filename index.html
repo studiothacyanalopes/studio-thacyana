@@ -6,7 +6,7 @@
   <title>Studio Thacyana Lopes - Agendamento</title>
   <link rel="stylesheet" href="style.css">
 
-  <!-- Firebase -->
+  <!-- Firebase inicialização (somente módulo para expor db e fs) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
     import { getFirestore, collection, addDoc, getDocs, query, where, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
@@ -64,6 +64,7 @@
     <p id="mensagem"></p>
   </div>
 
-  <script type="module" src="script.js"></script>
+  <!-- Script do agendamento (sem type="module") -->
+  <script src="script.js"></script>
 </body>
 </html>
