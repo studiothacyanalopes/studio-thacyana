@@ -30,7 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
   async function renderizarHorarios() {
     const dataSelecionada = dataInput.value;
     const clienteAtual = document.getElementById("whatsapp").value.replace(/\D/g, "");
-
     limparSelect();
 
     if (!dataSelecionada) {
@@ -38,10 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Certifica que data está no formato correto
-    const dataFormatada = dataSelecionada.trim();
-
-    const q = query(collection(db, "agendamentos"), where("data", "==", dataFormatada));
+    const q = query(collection(db, "agendamentos"), where("data", "==", dataSelecionada));
     const snapshot = await getDocs(q);
     const ocupados = snapshot.docs.map(doc => doc.data());
 
@@ -79,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const nome = document.getElementById("nome").value.trim();
     const whatsapp = document.getElementById("whatsapp").value.replace(/\D/g, "");
     const servico = document.getElementById("servico").value;
-    const data = dataInput.value.trim(); // Garante que não seja vazio ou com espaços
+    const data = dataInput.value;
     const hora = horarioSelect.value;
 
     if (!nome || !whatsapp || !servico || !data || !hora) {
@@ -89,17 +85,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     localStorage.setItem("clienteAtual", whatsapp);
 
-    // Mensagem pro Studio
+    // Abrir WhatsApp imediatamente (popup do navegador exige evento direto de clique)
     const msgStudio = `💅 *Novo Agendamento* 💕%0A👤 Nome: ${nome}%0A📞 WhatsApp: ${whatsapp}%0A💄 Serviço: ${servico}%0A📅 Data: ${data}%0A⏰ Horário: ${hora}`;
-    window.open(`https://wa.me/${numeroStudio}?text=${msgStudio}`, "_blank");
+    const studioWindow = window.open(`https://wa.me/${numeroStudio}?text=${msgStudio}`, "_blank");
 
-    // Mensagem pro Cliente
     const msgCliente = `✨ Olá ${nome}! Seu agendamento no Studio Thacyana Lopes foi confirmado! 💅%0A📅 Data: ${data}%0A⏰ Horário: ${hora}%0A💄 Serviço: ${servico}%0A💖 Esperamos por você!`;
-    window.open(`https://wa.me/55${whatsapp}?text=${msgCliente}`, "_blank");
+    const clienteWindow = window.open(`https://wa.me/55${whatsapp}?text=${msgCliente}`, "_blank`);
 
     try {
-      // Salvar no Firestore com data formatada
-      await addDoc(collection(db, "agendamentos"), { nome, whatsapp, servico, data: data, hora });
+      // Salvar no Firestore em paralelo, sem travar o WhatsApp
+      await addDoc(collection(db, "agendamentos"), { nome, whatsapp, servico, data, hora });
       mensagem.textContent = "✅ Agendamento confirmado com sucesso!";
       renderizarHorarios();
       form.reset();
@@ -112,7 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ❌ Desmarcar horário
   btnDesmarcar.addEventListener("click", async () => {
     const whatsapp = document.getElementById("whatsapp").value.replace(/\D/g, "");
-    const data = dataInput.value.trim();
+    const data = dataInput.value;
 
     if (!whatsapp || !data) {
       alert("Preencha o WhatsApp e selecione a data!");
@@ -130,6 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
       for (const docSnap of snapshot.docs) {
         await deleteDoc(doc(db, "agendamentos", docSnap.id));
 
+        // Mensagem pro Studio
         const a = docSnap.data();
         const msgStudio = `❌ *Cancelamento* ❌%0A👤 Nome: ${a.nome}%0A📞 WhatsApp: ${a.whatsapp}%0A💄 Serviço: ${a.servico}%0A📅 Data: ${a.data}%0A⏰ Horário: ${a.hora}`;
         window.open(`https://wa.me/${numeroStudio}?text=${msgStudio}`, "_blank");
