@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, query, where, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 
-// 🔑 Substitua pelos seus dados reais do Firebase
+// 🔑 Config do Firebase
 const firebaseConfig = {
   apiKey: "SUA_API_KEY",
   authDomain: "SEU_PROJECT_ID.firebaseapp.com",
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const mensagem = document.getElementById("mensagem");
   const btnDesmarcar = document.getElementById("btn-desmarcar");
   const horariosFixos = ["08:00", "10:00", "13:00", "15:00", "17:00"];
-  const numeroStudio = "5562995446258"; // WhatsApp do estúdio
+  const numeroStudio = "5562995446258"; // WhatsApp do Studio
 
   function limparSelect() {
     horarioSelect.innerHTML = '<option value="">Selecione um horário</option>';
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Preencher WhatsApp do cliente se estiver salvo
+  // Preenche WhatsApp salvo
   const clienteAtual = localStorage.getItem("clienteAtual");
   if (clienteAtual) document.getElementById("whatsapp").value = clienteAtual;
   renderizarHorarios();
@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
   dataInput.addEventListener("change", renderizarHorarios);
 
   // 💾 Agendamento
-  form.addEventListener("submit", async e => {
+  form.addEventListener("submit", e => {
     e.preventDefault();
 
     const nome = document.getElementById("nome").value.trim();
@@ -85,29 +85,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
     localStorage.setItem("clienteAtual", whatsapp);
 
-    // Verifica se horário já existe
-    const q = query(collection(db, "agendamentos"), where("data", "==", data), where("hora", "==", hora));
-    const snapshot = await getDocs(q);
-    if (snapshot.docs.some(doc => doc.data().whatsapp !== whatsapp)) {
-      alert("Esse horário já está ocupado por outro cliente.");
-      return;
-    }
-
-    await addDoc(collection(db, "agendamentos"), { nome, whatsapp, servico, data, hora });
-    mensagem.textContent = "✅ Agendamento confirmado com sucesso!";
-    renderizarHorarios();
-
-    // 📲 Mensagem pro Studio
+    // Abrir WhatsApp do Studio imediatamente
     const msgStudio = `💅 *Novo Agendamento* 💕%0A👤 Nome: ${nome}%0A📞 WhatsApp: ${whatsapp}%0A💄 Serviço: ${servico}%0A📅 Data: ${data}%0A⏰ Horário: ${hora}`;
     window.open(`https://wa.me/${numeroStudio}?text=${msgStudio}`, "_blank");
 
-    // 📲 Mensagem pro Cliente
+    // Abrir WhatsApp do cliente após 1s
     const msgCliente = `✨ Olá ${nome}! Seu agendamento no Studio Thacyana Lopes foi confirmado! 💅%0A📅 Data: ${data}%0A⏰ Horário: ${hora}%0A💄 Serviço: ${servico}%0A💖 Esperamos por você!`;
     setTimeout(() => {
       window.open(`https://wa.me/55${whatsapp}?text=${msgCliente}`, "_blank");
-    }, 1500);
+    }, 1000);
 
-    form.reset();
+    // Salvar no Firestore em paralelo (não trava o WhatsApp)
+    (async () => {
+      try {
+        await addDoc(collection(db, "agendamentos"), { nome, whatsapp, servico, data, hora });
+        mensagem.textContent = "✅ Agendamento confirmado com sucesso!";
+        renderizarHorarios();
+        form.reset();
+      } catch (err) {
+        console.error("Erro ao salvar no Firestore:", err);
+        alert("Erro ao salvar o agendamento, tente novamente.");
+      }
+    })();
   });
 
   // ❌ Desmarcar horário
