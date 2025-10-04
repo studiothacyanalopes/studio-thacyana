@@ -5,25 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Studio Thacyana Lopes - Agendamento</title>
   <link rel="stylesheet" href="style.css">
-
-  <!-- Firebase inicialização (somente módulo para expor db e fs) -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, query, where, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "SUA_API_KEY",
-      authDomain: "SEU_PROJECT_ID.firebaseapp.com",
-      projectId: "SEU_PROJECT_ID",
-      storageBucket: "SEU_PROJECT_ID.appspot.com",
-      messagingSenderId: "SEU_SENDER_ID",
-      appId: "SEU_APP_ID"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    window.db = getFirestore(app);
-    window.fs = { collection, addDoc, getDocs, query, where, deleteDoc, doc };
-  </script>
 </head>
 <body>
   <div class="container">
@@ -64,7 +45,7 @@
     <p id="mensagem"></p>
   </div>
 
-  <!-- Script do agendamento (sem type="module") -->
-  <script src="script.js"></script>
+  <!-- Script do Firebase + agendamento -->
+  <script type="module" src="script.js"></script>
 </body>
 </html>
