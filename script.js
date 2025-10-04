@@ -22,6 +22,7 @@ function renderizarHorarios() {
   const dataSelecionada = dataInput.value;
   const agendamentos = pegarAgendamentos();
   const ocupados = agendamentos[dataSelecionada] || [];
+  const clienteAtual = document.getElementById("whatsapp").value.replace(/\D/g, "");
 
   horarioSelect.innerHTML = '<option value="">Selecione um horário</option>';
 
@@ -29,10 +30,18 @@ function renderizarHorarios() {
     const option = document.createElement("option");
     option.value = hora;
     option.textContent = hora;
-    if (ocupados.find(a => a.hora === hora)) {
-      option.disabled = true;
-      option.textContent += " (indisponível)";
+
+    const ocupacao = ocupados.find(a => a.hora === hora);
+
+    if (ocupacao) {
+      if (ocupacao.whatsapp !== clienteAtual) {
+        option.disabled = true;
+        option.textContent += " (indisponível)";
+      } else {
+        option.textContent += " (seu horário)";
+      }
     }
+
     horarioSelect.appendChild(option);
   });
 }
@@ -48,6 +57,7 @@ window.addEventListener("load", () => {
   if (clienteAtual) {
     document.getElementById("whatsapp").value = clienteAtual;
   }
+  renderizarHorarios(); // garante que o próprio horário apareça
 });
 
 // evento de agendamento
@@ -65,20 +75,24 @@ form.addEventListener("submit", e => {
     return;
   }
 
-  // salva o WhatsApp como cliente atual
   localStorage.setItem("clienteAtual", whatsapp);
 
-  // salva no localStorage com nome, whatsapp, serviço
   const agendamentos = pegarAgendamentos();
   if (!agendamentos[data]) agendamentos[data] = [];
-  agendamentos[data].push({hora, nome, whatsapp, servico});
+
+  // se o cliente já tinha marcado esse horário, atualiza
+  const existente = agendamentos[data].find(a => a.hora === hora && a.whatsapp === whatsapp);
+  if (!existente) {
+    agendamentos[data].push({hora, nome, whatsapp, servico});
+  }
+
   salvarAgendamentos(agendamentos);
 
   mensagem.textContent = "Agendamento confirmado com sucesso!";
 
-  // mensagem para esposa
-  const msg = `💅 *Novo Agendamento - Studio Thacyana Lopes* 💕%0A%0A👤 Nome: ${nome}%0A📞 WhatsApp: ${whatsapp}%0A💄 Serviço: ${servico}%0A📅 Data: ${data}%0A⏰ Horário: ${hora}`;
-  window.open(`https://wa.me/5562995446258?text=${msg}`, "_blank");
+  // mensagem para studio
+  const msgStudio = `💅 *Novo Agendamento - Studio Thacyana Lopes* 💕%0A%0A👤 Nome: ${nome}%0A📞 WhatsApp: ${whatsapp}%0A💄 Serviço: ${servico}%0A📅 Data: ${data}%0A⏰ Horário: ${hora}`;
+  window.open(`https://wa.me/5562995446258?text=${msgStudio}`, "_blank");
 
   // mensagem para cliente
   const msgCliente = `✨ Olá ${nome}! Seu agendamento no Studio Thacyana Lopes foi confirmado! 💅%0A%0A📅 Data: ${data}%0A⏰ Horário: ${hora}%0A💄 Serviço: ${servico}%0A%0A💖 Esperamos por você!`;
@@ -118,5 +132,25 @@ btnDesmarcar.addEventListener("click", () => {
     salvarAgendamentos(agendamentos);
     renderizarHorarios();
     mensagem.textContent = "Seu(s) horário(s) foram desmarcados com sucesso!";
+
+    // mensagem para studio com nome e serviço
+    encontrados.forEach(a => {
+      const msgStudio = `❌ *Cancelamento - Studio Thacyana Lopes* ❌%0A%0A👤 Nome: ${a.nome}%0A📞 WhatsApp: ${a.whatsapp}%0A💄 Serviço: ${a.servico}%0A📅 Data: ${data}%0A⏰ Horário: ${a.hora}`;
+      window.open(`https://wa.me/5562995446258?text=${msgStudio}`, "_blank");
+    });
+
+    // mensagem para cliente
+    const msgCliente = `⚠️ Olá! Seu(s) horário(s) no Studio Thacyana Lopes foram desmarcados para o dia ${data}.`;
+    setTimeout(() => {
+      window.open(`https://wa.me/55${whatsapp}?text=${msgCliente}`, "_blank");
+    }, 1500);
   }
 });
+
+// função para gerar uma URL separada para ver todos os agendamentos (painel studio)
+function gerarPainelAgendamentos() {
+  const agendamentos = pegarAgendamentos();
+  const jsonStr = encodeURIComponent(JSON.stringify(agendamentos, null, 2));
+  const url = `data:text/json;charset=utf-8,${jsonStr}`;
+  window.open(url, "_blank");
+}
