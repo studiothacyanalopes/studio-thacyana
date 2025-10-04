@@ -1,51 +1,50 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Studio Thacyana Lopes - Agendamento</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Studio Thacyana Lopes - Agendamento</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Studio Thacyana Lopes</h1>
-    <h2>Agende seu horário</h2>
+<div class="container">
+  <h1>Studio Thacyana Lopes</h1>
+  <h2>Agende seu horário</h2>
 
-    <form id="form-agendamento">
-      <label>Nome:</label>
-      <input type="text" id="nome" required>
+  <form id="form-agendamento">
+    <label>Nome:</label>
+    <input type="text" id="nome" required>
 
-      <label>WhatsApp:</label>
-      <input type="tel" id="whatsapp" placeholder="Ex: 62991234567" required>
+    <label>WhatsApp:</label>
+    <input type="tel" id="whatsapp" placeholder="Ex: 62991234567" required>
 
-      <label>Serviço:</label>
-      <select id="servico" required>
-        <option value="">Selecione um serviço</option>
-        <option value="Unha simples">Unha simples</option>
-        <option value="Alongamento de unha">Alongamento de unha</option>
-        <option value="Cílios">Cílios</option>
-        <option value="Sobrancelha">Sobrancelha</option>
-        <option value="Spa dos pés">Spa dos pés</option>
-        <option value="Dermaplaning">Dermaplaning</option>
-      </select>
+    <label>Serviço:</label>
+    <select id="servico" required>
+      <option value="">Selecione um serviço</option>
+      <option value="Unha simples">Unha simples</option>
+      <option value="Alongamento de unha">Alongamento de unha</option>
+      <option value="Cílios">Cílios</option>
+      <option value="Sobrancelha">Sobrancelha</option>
+      <option value="Spa dos pés">Spa dos pés</option>
+      <option value="Dermaplaning">Dermaplaning</option>
+    </select>
 
-      <label>Data:</label>
-      <input type="date" id="data" required>
+    <label>Data:</label>
+    <input type="date" id="data" required>
 
-      <label>Horário:</label>
-      <select id="horario" required>
-        <option value="">Selecione a data primeiro</option>
-      </select>
+    <label>Horário:</label>
+    <select id="horario" required>
+      <option value="">Selecione a data primeiro</option>
+    </select>
 
-      <button type="submit">Confirmar Agendamento</button>
-      <button type="button" id="btn-desmarcar">Desmarcar meu horário</button>
-    </form>
+    <button type="submit">Confirmar Agendamento</button>
+    <button type="button" id="btn-desmarcar">Desmarcar meu horário</button>
+  </form>
 
-    <h3>Mensagem:</h3>
-    <p id="mensagem"></p>
-  </div>
+  <h3>Mensagem:</h3>
+  <p id="mensagem"></p>
+</div>
 
-  <!-- Script do Firebase + agendamento -->
-  <script type="module" src="script.js"></script>
+<script type="module" src="script.js"></script>
 </body>
 </html>
