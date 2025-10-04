@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
   dataInput.addEventListener("change", renderizarHorarios);
 
   // 💾 Agendamento
-  form.addEventListener("submit", e => {
+  form.addEventListener("submit", async e => {
     e.preventDefault();
 
     const nome = document.getElementById("nome").value.trim();
@@ -85,28 +85,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     localStorage.setItem("clienteAtual", whatsapp);
 
-    // Abrir WhatsApp do Studio imediatamente
+    // Abrir WhatsApp imediatamente (popup do navegador exige evento direto de clique)
     const msgStudio = `💅 *Novo Agendamento* 💕%0A👤 Nome: ${nome}%0A📞 WhatsApp: ${whatsapp}%0A💄 Serviço: ${servico}%0A📅 Data: ${data}%0A⏰ Horário: ${hora}`;
-    window.open(`https://wa.me/${numeroStudio}?text=${msgStudio}`, "_blank");
+    const studioWindow = window.open(`https://wa.me/${numeroStudio}?text=${msgStudio}`, "_blank");
 
-    // Abrir WhatsApp do cliente após 1s
     const msgCliente = `✨ Olá ${nome}! Seu agendamento no Studio Thacyana Lopes foi confirmado! 💅%0A📅 Data: ${data}%0A⏰ Horário: ${hora}%0A💄 Serviço: ${servico}%0A💖 Esperamos por você!`;
-    setTimeout(() => {
-      window.open(`https://wa.me/55${whatsapp}?text=${msgCliente}`, "_blank");
-    }, 1000);
+    const clienteWindow = window.open(`https://wa.me/55${whatsapp}?text=${msgCliente}`, "_blank`);
 
-    // Salvar no Firestore em paralelo (não trava o WhatsApp)
-    (async () => {
-      try {
-        await addDoc(collection(db, "agendamentos"), { nome, whatsapp, servico, data, hora });
-        mensagem.textContent = "✅ Agendamento confirmado com sucesso!";
-        renderizarHorarios();
-        form.reset();
-      } catch (err) {
-        console.error("Erro ao salvar no Firestore:", err);
-        alert("Erro ao salvar o agendamento, tente novamente.");
-      }
-    })();
+    try {
+      // Salvar no Firestore em paralelo, sem travar o WhatsApp
+      await addDoc(collection(db, "agendamentos"), { nome, whatsapp, servico, data, hora });
+      mensagem.textContent = "✅ Agendamento confirmado com sucesso!";
+      renderizarHorarios();
+      form.reset();
+    } catch (err) {
+      console.error("Erro ao salvar no Firestore:", err);
+      alert("Erro ao salvar o agendamento, tente novamente.");
+    }
   });
 
   // ❌ Desmarcar horário
@@ -136,11 +131,10 @@ document.addEventListener("DOMContentLoaded", () => {
         window.open(`https://wa.me/${numeroStudio}?text=${msgStudio}`, "_blank");
       }
 
-      // Mensagem pro Cliente
       const msgCliente = `⚠️ Olá! Seu(s) horário(s) no Studio Thacyana Lopes foram desmarcados para o dia ${data}.`;
       setTimeout(() => {
         window.open(`https://wa.me/55${whatsapp}?text=${msgCliente}`, "_blank");
-      }, 1500);
+      }, 1000);
 
       mensagem.textContent = "❌ Seu(s) horário(s) foram desmarcados com sucesso!";
       renderizarHorarios();
