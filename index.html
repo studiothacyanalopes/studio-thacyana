@@ -5,6 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Studio Thacyana Lopes - Agendamento</title>
   <link rel="stylesheet" href="style.css">
+
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, query, where, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "SUA_API_KEY",
+      authDomain: "SEU_PROJECT_ID.firebaseapp.com",
+      projectId: "SEU_PROJECT_ID",
+      storageBucket: "SEU_PROJECT_ID.appspot.com",
+      messagingSenderId: "SEU_SENDER_ID",
+      appId: "SEU_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    window.db = getFirestore(app);
+    window.fs = { collection, addDoc, getDocs, query, where, deleteDoc, doc };
+  </script>
 </head>
 <body>
   <div class="container">
@@ -41,12 +60,10 @@
       <button type="button" id="btn-desmarcar">Desmarcar meu horário</button>
     </form>
 
-    <h3>Seus horários agendados:</h3>
-    <ul id="lista-agendamentos"></ul>
-
+    <h3>Mensagem:</h3>
     <p id="mensagem"></p>
   </div>
 
-  <script src="script.js"></script>
+  <script type="module" src="script.js"></script>
 </body>
 </html>
