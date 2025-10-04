@@ -11,6 +11,7 @@
     <h1>Studio Thacyana Lopes</h1>
     <h2>Agende seu horário</h2>
 
+    <!-- 🔹 Formulário principal -->
     <form id="form-agendamento">
       <label>Nome:</label>
       <input type="text" id="nome" required>
@@ -38,12 +39,18 @@
       </select>
 
       <button type="submit">Confirmar Agendamento</button>
-      <button type="button" id="btn-desmarcar" style="margin-top: 10px; background: #ff4c4c;">Cancelar Agendamento</button>
+      <button type="button" id="btn-ver-agendamento" style="background: #007bff; margin-top: 10px;">
+        Ver meu horário
+      </button>
+      <button type="button" id="btn-desmarcar" style="margin-top: 10px; background: #ff4c4c;">
+        Cancelar Agendamento
+      </button>
     </form>
 
     <p id="mensagem"></p>
   </div>
 
-  <script src="script.js"></script>
+  <!-- 🔹 Script JS principal -->
+  <script type="module" src="script.js"></script>
 </body>
 </html>
