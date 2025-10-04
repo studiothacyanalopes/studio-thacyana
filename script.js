@@ -138,4 +138,30 @@ document.addEventListener("DOMContentLoaded", () => {
     mensagem.textContent = "❌ Seus horários foram desmarcados com sucesso!";
     renderizarHorarios();
   });
+
+  // 🔍 Ver meu agendamento (novo)
+  const btnVerHorario = document.getElementById("btn-ver-agendamento");
+  btnVerHorario.addEventListener("click", async () => {
+    const whatsapp = document.getElementById("whatsapp").value.replace(/\D/g, "");
+    if (!whatsapp) {
+      alert("Digite seu WhatsApp para ver seus horários!");
+      return;
+    }
+
+    const { data: agendamentos } = await supabase
+      .from("agendamentos")
+      .select("*")
+      .eq("whatsapp", whatsapp);
+
+    if (!agendamentos || agendamentos.length === 0) {
+      mensagem.textContent = "⚠️ Nenhum agendamento encontrado para esse WhatsApp.";
+      return;
+    }
+
+    const listaHorarios = agendamentos
+      .map(a => `📅 ${a.data} ⏰ ${a.hora} - ${a.servico}`)
+      .join("\n");
+
+    mensagem.textContent = `Seus horários:\n${listaHorarios}`;
+  });
 });
