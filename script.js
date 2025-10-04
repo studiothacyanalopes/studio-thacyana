@@ -14,22 +14,25 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const form = document.getElementById("form-agendamento");
   const dataInput = document.getElementById("data");
   const horarioSelect = document.getElementById("horario");
   const mensagem = document.getElementById("mensagem");
   const btnDesmarcar = document.getElementById("btn-desmarcar");
   const horariosFixos = ["08:00", "10:00", "13:00", "15:00", "17:00"];
-  const numeroStudio = "5562995446258"; // WhatsApp do Studio
+  const numeroStudio = "5562995446258";
 
+  // Função para limpar select
   function limparSelect() {
     horarioSelect.innerHTML = '<option value="">Selecione um horário</option>';
   }
 
+  // Função para renderizar horários
   async function renderizarHorarios() {
     const dataSelecionada = dataInput.value;
     const clienteAtual = document.getElementById("whatsapp").value.replace(/\D/g, "");
+    const horaSelecionadaAntes = horarioSelect.value;
 
     limparSelect();
 
@@ -38,12 +41,13 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Certifica que data está no formato correto
     const dataFormatada = dataSelecionada.trim();
-
     const q = query(collection(db, "agendamentos"), where("data", "==", dataFormatada));
     const snapshot = await getDocs(q);
     const ocupados = snapshot.docs.map(doc => doc.data());
+
+    // Verifica se o cliente já tem agendamento nesse dia
+    const ocupadoCliente = ocupados.find(a => a.whatsapp === clienteAtual);
 
     horariosFixos.forEach(hora => {
       const option = document.createElement("option");
@@ -57,8 +61,14 @@ document.addEventListener("DOMContentLoaded", () => {
           option.textContent += " (indisponível)";
         } else {
           option.textContent += " (seu horário)";
-          option.selected = true;
         }
+      }
+
+      // Seleciona horário previamente escolhido ou do próprio cliente
+      if (hora === horaSelecionadaAntes && !option.disabled) {
+        option.selected = true;
+      } else if (hora === ocupadoCliente?.hora) {
+        option.selected = true;
       }
 
       horarioSelect.appendChild(option);
@@ -66,10 +76,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Preenche WhatsApp salvo
-  const clienteAtual = localStorage.getItem("clienteAtual");
-  if (clienteAtual) document.getElementById("whatsapp").value = clienteAtual;
-  renderizarHorarios();
+  const clienteSalvo = localStorage.getItem("clienteAtual");
+  if (clienteSalvo) document.getElementById("whatsapp").value = clienteSalvo;
 
+  // Renderiza horários se data já preenchida
+  if (dataInput.value) await renderizarHorarios();
+
+  // Atualiza horários quando muda a data
   dataInput.addEventListener("change", renderizarHorarios);
 
   // 💾 Agendamento
@@ -79,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const nome = document.getElementById("nome").value.trim();
     const whatsapp = document.getElementById("whatsapp").value.replace(/\D/g, "");
     const servico = document.getElementById("servico").value;
-    const data = dataInput.value.trim(); // Garante que não seja vazio ou com espaços
+    const data = dataInput.value.trim();
     const hora = horarioSelect.value;
 
     if (!nome || !whatsapp || !servico || !data || !hora) {
@@ -98,8 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.open(`https://wa.me/55${whatsapp}?text=${msgCliente}`, "_blank");
 
     try {
-      // Salvar no Firestore com data formatada
-      await addDoc(collection(db, "agendamentos"), { nome, whatsapp, servico, data: data, hora });
+      await addDoc(collection(db, "agendamentos"), { nome, whatsapp, servico, data, hora });
       mensagem.textContent = "✅ Agendamento confirmado com sucesso!";
       renderizarHorarios();
       form.reset();
