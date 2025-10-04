@@ -1,4 +1,3 @@
-// Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, query, where, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 
@@ -14,7 +13,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Elementos
 const form = document.getElementById("form-agendamento");
 const dataInput = document.getElementById("data");
 const horarioSelect = document.getElementById("horario");
@@ -23,7 +21,6 @@ const btnDesmarcar = document.getElementById("btn-desmarcar");
 
 const horariosFixos = ["08:00", "10:00", "13:00", "15:00", "17:00"];
 
-// Funções
 function limparSelect() {
   horarioSelect.innerHTML = '<option value="">Selecione um horário</option>';
 }
@@ -40,16 +37,16 @@ async function renderizarHorarios() {
 
   const q = query(collection(db, "agendamentos"), where("data", "==", dataSelecionada));
   const snapshot = await getDocs(q);
-  const ocupados = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  const ocupados = snapshot.docs.map(doc => doc.data());
 
   horariosFixos.forEach(hora => {
     const option = document.createElement("option");
     option.value = hora;
     option.textContent = hora;
 
-    const ocupacao = ocupados.find(a => a.hora === hora);
-    if (ocupacao) {
-      if (ocupacao.whatsapp !== clienteAtual) {
+    const ocupado = ocupados.find(a => a.hora === hora);
+    if (ocupado) {
+      if (ocupado.whatsapp !== clienteAtual) {
         option.disabled = true;
         option.textContent += " (indisponível)";
       } else {
@@ -62,7 +59,6 @@ async function renderizarHorarios() {
   });
 }
 
-// Eventos
 window.addEventListener("load", () => {
   const clienteAtual = localStorage.getItem("clienteAtual");
   if (clienteAtual) document.getElementById("whatsapp").value = clienteAtual;
@@ -71,7 +67,6 @@ window.addEventListener("load", () => {
 
 dataInput.addEventListener("change", renderizarHorarios);
 
-// Agendamento
 form.addEventListener("submit", async e => {
   e.preventDefault();
 
@@ -90,6 +85,7 @@ form.addEventListener("submit", async e => {
 
   const q = query(collection(db, "agendamentos"), where("data", "==", data), where("hora", "==", hora));
   const snapshot = await getDocs(q);
+
   if (snapshot.docs.some(doc => doc.data().whatsapp !== whatsapp)) {
     alert("Esse horário já está ocupado por outro cliente.");
     return;
@@ -97,16 +93,7 @@ form.addEventListener("submit", async e => {
 
   await addDoc(collection(db, "agendamentos"), { nome, whatsapp, servico, data, hora });
 
-  mensagem.textContent = "Agendamento confirmado com sucesso!";
-
-  // Mensagens WhatsApp (direto no clique)
-  const msgStudio = encodeURIComponent(`💅 *Novo Agendamento - Studio Thacyana Lopes* 💕\n\n👤 Nome: ${nome}\n📞 WhatsApp: ${whatsapp}\n💄 Serviço: ${servico}\n📅 Data: ${data}\n⏰ Horário: ${hora}`);
-  const msgCliente = encodeURIComponent(`✨ Olá ${nome}! Seu agendamento no Studio Thacyana Lopes foi confirmado! 💅\n\n📅 Data: ${data}\n⏰ Horário: ${hora}\n💄 Serviço: ${servico}\n\n💖 Esperamos por você!`);
-
-  window.open(`https://wa.me/5562995446258?text=${msgStudio}`, "_blank");
-  window.open(`https://wa.me/55${whatsapp}?text=${msgCliente}`, "_blank");
-
-  form.reset();
+  mensagem.textContent = "✅ Agendamento confirmado com sucesso!";
   renderizarHorarios();
 });
 
@@ -130,15 +117,8 @@ btnDesmarcar.addEventListener("click", async () => {
   if (confirm("Deseja realmente desmarcar seu(s) horário(s) nesta data?")) {
     for (const docSnap of snapshot.docs) {
       await deleteDoc(doc(db, "agendamentos", docSnap.id));
-      const a = docSnap.data();
-      const msgStudio = encodeURIComponent(`❌ *Cancelamento - Studio Thacyana Lopes* ❌\n\n👤 Nome: ${a.nome}\n📞 WhatsApp: ${a.whatsapp}\n💄 Serviço: ${a.servico}\n📅 Data: ${a.data}\n⏰ Horário: ${a.hora}`);
-      window.open(`https://wa.me/5562995446258?text=${msgStudio}`, "_blank");
     }
-
-    const msgCliente = encodeURIComponent(`⚠️ Olá! Seus horários no Studio Thacyana Lopes foram desmarcados para o dia ${data}.`);
-    window.open(`https://wa.me/55${whatsapp}?text=${msgCliente}`, "_blank");
-
-    mensagem.textContent = "Seu(s) horário(s) foram desmarcados com sucesso!";
+    mensagem.textContent = "❌ Seu(s) horário(s) foram desmarcados com sucesso!";
     renderizarHorarios();
   }
 });
