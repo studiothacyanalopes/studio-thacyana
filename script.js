@@ -30,12 +30,13 @@ document.addEventListener("DOMContentLoaded", () => {
   async function renderizarHorarios() {
     const dataSelecionada = dataInput.value;
     const clienteAtual = document.getElementById("whatsapp").value.replace(/\D/g, "");
-    limparSelect();
 
     if (!dataSelecionada) {
       horarioSelect.innerHTML = '<option value="">Selecione a data primeiro</option>';
       return;
     }
+
+    limparSelect(); // só limpa se a data estiver selecionada
 
     const q = query(collection(db, "agendamentos"), where("data", "==", dataSelecionada));
     const snapshot = await getDocs(q);
@@ -87,10 +88,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Abrir WhatsApp imediatamente (popup do navegador exige evento direto de clique)
     const msgStudio = `💅 *Novo Agendamento* 💕%0A👤 Nome: ${nome}%0A📞 WhatsApp: ${whatsapp}%0A💄 Serviço: ${servico}%0A📅 Data: ${data}%0A⏰ Horário: ${hora}`;
-    const studioWindow = window.open(`https://wa.me/${numeroStudio}?text=${msgStudio}`, "_blank");
+    window.open(`https://wa.me/${numeroStudio}?text=${msgStudio}`, "_blank");
 
     const msgCliente = `✨ Olá ${nome}! Seu agendamento no Studio Thacyana Lopes foi confirmado! 💅%0A📅 Data: ${data}%0A⏰ Horário: ${hora}%0A💄 Serviço: ${servico}%0A💖 Esperamos por você!`;
-    const clienteWindow = window.open(`https://wa.me/55${whatsapp}?text=${msgCliente}`, "_blank`);
+    window.open(`https://wa.me/55${whatsapp}?text=${msgCliente}`, "_blank");
 
     try {
       // Salvar no Firestore em paralelo, sem travar o WhatsApp
