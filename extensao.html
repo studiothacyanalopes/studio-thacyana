@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Extensão de Cílios: Métodos Inovadores</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+  body { background: #fff0f5; color: #333; line-height: 1.6; }
+
+  a { text-decoration: none; }
+
+  header {
+    text-align: center;
+    padding: 50px 20px;
+    background: #ff4d6d;
+    color: #fff;
+    position: relative;
+  }
+  header h1 { font-size: 3em; margin-bottom: 15px; }
+  header p { font-size: 1.3em; }
+
+  .highlight-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 15px;
+    background: #ff85a2;
+    animation: moveBar 3s linear infinite;
+  }
+  @keyframes moveBar {
+    0% {transform: translateX(0);}
+    50% {transform: translateX(50%);}
+    100% {transform: translateX(0);}
+  }
+
+  .container { max-width: 1200px; margin: auto; padding: 20px; }
+
+  .offer { text-align: center; margin: 40px 0; position: relative; }
+
+  /* Logo de promoção animada */
+  .promo-logo {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 20px auto;
+    border-radius: 50%;
+    background: red;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.5em;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    animation: bounce 1.5s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .offer .price { font-size: 2.5em; color: #ff4d6d; font-weight: bold; margin-top: 10px; }
+  .offer .original-price { font-size: 1.2em; color: #999; margin-left: 10px; position: relative; display: inline-block; }
+
+  /* Riscar preço antigo corretamente */
+  .offer .original-price::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 0;
+    border-top: 3px solid red;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  .btn-buy, .btn-whatsapp {
+    display: inline-block;
+    background: #28a745;
+    color: #fff;
+    padding: 18px 40px;
+    font-size: 1.3em;
+    border-radius: 10px;
+    margin: 15px 10px 0 10px;
+    transition: 0.3s;
+    animation: pulse 1s infinite;
+  }
+  @keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 0 5px #28a745; }
+    50% { transform: scale(1.05); box-shadow: 0 0 20px #28a745; }
+    100% { transform: scale(1); box-shadow: 0 0 5px #28a745; }
+  }
+
+  .btn-buy:hover, .btn-whatsapp:hover { background: #218838; }
+
+  .section { padding: 60px 20px; text-align: center; }
+  .section h2 { font-size: 2em; margin-bottom: 20px; color: #ff4d6d; }
+  .section p, .section li { max-width: 800px; margin: 0 auto 10px auto; font-size: 1.2em; }
+  .section ul { list-style: none; padding-left: 0; }
+
+  .techniques { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin: 40px 0; }
+  .technique-box { background: #fff4f8; padding: 20px; border-radius: 15px; width: 250px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); position: relative; transition: 0.3s; }
+  .technique-box:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
+
+  .bonus { background: #fff0f5; padding: 30px; border-radius: 15px; margin: 30px auto; max-width: 900px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+  .bonus h3 { color: #ff4d6d; margin-bottom: 15px; }
+  .bonus ul { list-style: disc; padding-left: 20px; }
+
+  .guarantee { background: #fff4f8; padding: 40px 20px; text-align: center; border-radius: 15px; margin: 40px auto; max-width: 800px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+  .guarantee h3 { font-size: 1.8em; color: #ff4d6d; margin-bottom: 15px; }
+
+  footer { text-align: center; padding: 30px 20px; background: #ff85a2; color: #fff; margin-top: 40px; }
+  footer p { font-size: 1em; }
+
+  .highlight { color: #ff4d6d; font-weight: bold; }
+
+  .whatsapp-fixed { position: fixed; bottom: 20px; right: 20px; z-index: 999; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="highlight-bar"></div>
+  <h1>Extensão de Cílios: Métodos Inovadores</h1>
+  <p>Transforme seu olhar com técnicas profissionais e resultados incríveis!</p>
+</header>
+
+<div class="container">
+
+  <div class="offer">
+    <div class="promo-logo">PROMO</div>
+    <p class="price">R$ 9,99 <span class="original-price">R$ 19,99</span></p>
+    <a href="https://pay.hotmart.com/U102257684N" class="btn-buy">🔥 COMPRAR AGORA</a>
+  </div>
+
+  <div class="section">
+    <h2>✅ O que você vai aprender:</h2>
+    <ul>
+      <li>Técnicas profissionais de aplicação de cílios</li>
+      <li>Modelos, formatos e estilos que encantam clientes</li>
+      <li>Cuidados, segurança e durabilidade</li>
+      <li>Dicas práticas para fidelizar clientes</li>
+      <li>Mapeamento de Olhar</li>
+      <li>Isolamento e separação das camadas</li>
+      <li>Fios: tipos, tamanho, espessura e curvatura</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>🎓 Técnicas Detalhadas:</h2>
+    <div class="techniques">
+      <div class="technique-box">Clássico Fio a Fio</div>
+      <div class="technique-box">Camadas de Cílios</div>
+      <div class="technique-box">Efeito Delineado (Fox)</div>
+      <div class="technique-box">Mega Volume</div>
+      <div class="technique-box">Volume Híbrido</div>
+      <div class="technique-box">Volume Russo</div>
+    </div>
+  </div>
+
+ <div class="section bonus">
+    <h3>🎁 Comprando agora, você também vai aprender:</h3>
+    <ul>
+      <li>Como se tornar uma empreendedora</li>
+      <li>Materiais necessários para os procedimentos</li>
+      <li>Passo a passo dos procedimentos para cada técnica <a href="#" target="_blank">Abrir Drive</a></li>
+      <li>Técnicas exclusivas</li>
+      <li>Mapeamento para diversos formatos de olhos</li>
+      <li>Diferenciação no mercado</li>
+    </ul>
+</div>
+
+  <div class="section guarantee">
+    <h3>💰 Valor Promocional:</h3>
+    <p>De <span class="original-price">R$ 19,99</span> por apenas <span class="highlight">R$ 9,99</span></p>
+    <a href="https://pay.hotmart.com/U102257684N" class="btn-buy">📥 COMPRAR AGORA</a>
+  </div>
+
+</div>
+
+<a href="https://wa.me/556293347287" target="_blank" class="whatsapp-fixed btn-whatsapp">💬 Fale Conosco!</a>
+
+</body>
+</html>
