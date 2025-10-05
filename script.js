@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const mensagem = document.getElementById("mensagem");
   const btnDesmarcar = document.getElementById("btn-desmarcar");
   const horariosFixos = ["08:00", "10:00", "13:00", "15:00", "17:00"];
-  const numeroStudio = "5562995446258"; // WhatsApp Studio
+  const numeroStudio = "5562993347287"; // WhatsApp Studio
 
   // 🕐 Carregar horários
   async function renderizarHorarios() {
@@ -165,3 +165,4 @@ document.addEventListener("DOMContentLoaded", () => {
     mensagem.textContent = `Seus horários:\n${listaHorarios}`;
   });
 });
+
