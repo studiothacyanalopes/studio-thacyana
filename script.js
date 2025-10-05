@@ -31,13 +31,24 @@ document.addEventListener("DOMContentLoaded", () => {
       .select("*")
       .eq("data", dataSelecionada);
 
+    const agora = new Date();
+
     horariosFixos.forEach((hora) => {
       const option = document.createElement("option");
       option.value = hora;
       option.textContent = hora;
 
+      const [h, m] = hora.split(":").map(Number);
+      const dataHora = new Date(dataSelecionada);
+      dataHora.setHours(h, m, 0, 0);
+
       const ocupado = agendamentos?.find((a) => a.hora === hora);
-      if (ocupado) {
+
+      if (dataHora < agora) {
+        // horário já passou
+        option.disabled = true;
+        option.textContent += " (passado)";
+      } else if (ocupado) {
         if (ocupado.whatsapp !== clienteAtual) {
           option.disabled = true;
           option.textContent += " (indisponível)";
@@ -165,4 +176,3 @@ document.addEventListener("DOMContentLoaded", () => {
     mensagem.textContent = `Seus horários:\n${listaHorarios}`;
   });
 });
-
