@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Studio Thacyana Lopes</title>
-  
+
   <!-- Meta Pixel -->
   <script>
     !function(f,b,e,v,n,t,s)
@@ -44,6 +44,7 @@
       justify-content: space-between;
       align-items:center;
       box-shadow:0 2px 6px rgba(0,0,0,0.3);
+      flex-wrap:wrap;
     }
     header h1 { 
       font-size:1.8em; 
@@ -55,10 +56,11 @@
       50% { color:#ff69b4; }
       100% { color:#ff1493; }
     }
-    header nav ul { list-style:none; display:flex; gap:15px; }
+    nav { display:flex; flex-wrap:wrap; justify-content:flex-end; width:100%; }
+    header nav ul { list-style:none; display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; padding-top:10px; }
     header nav ul li a {
-      color:#fff; text-decoration:none; padding:10px 15px; border-radius:5px;
-      background:rgba(0,0,0,0.3); transition:.3s;
+      color:#fff; text-decoration:none; padding:10px 12px; border-radius:5px;
+      background:rgba(0,0,0,0.3); transition:.3s; font-size:0.95em;
     }
     header nav ul li a:hover { background:#f7c600; color:#111; }
 
@@ -85,8 +87,8 @@
     .container { max-width:1200px; margin:0 auto; }
 
     /* Benefícios */
-    .benefits { display:flex; flex-wrap:wrap; gap:30px; justify-content:center; margin-top:40px; }
-    .benefit-card { background:#fff; padding:30px; border-radius:12px; box-shadow:0 10px 25px rgba(0,0,0,0.1); width:250px; transition:.3s; }
+    .benefits { display:flex; flex-wrap:wrap; gap:20px; justify-content:center; margin-top:40px; }
+    .benefit-card { background:#fff; padding:20px; border-radius:12px; box-shadow:0 10px 25px rgba(0,0,0,0.1); flex:1 1 200px; max-width:250px; transition:.3s; }
     .benefit-card:hover { transform:translateY(-10px); box-shadow:0 15px 30px rgba(0,0,0,0.2); }
     .benefit-card i { font-size:2em; margin-bottom:15px; color:#f7c600; }
 
@@ -94,7 +96,7 @@
     .testimonials-container { position:relative; overflow:hidden; max-width:100%; margin-top:40px; }
     .testimonials { display:flex; gap:20px; scroll-behavior:smooth; overflow-x:auto; padding-bottom:10px; scrollbar-width:none; -ms-overflow-style:none; }
     .testimonials::-webkit-scrollbar { display:none; }
-    .testimonial-card { background:#222; color:#fff; padding:25px; border-radius:12px; min-width:300px; flex-shrink:0; }
+    .testimonial-card { background:#222; color:#fff; padding:20px; border-radius:12px; min-width:250px; flex-shrink:0; }
     .testimonial-card:hover { transform:translateY(-5px); }
     .testimonial-arrow { position:absolute; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.5); color:#fff; border:none; font-size:1.5em; padding:10px; cursor:pointer; border-radius:50%; z-index:10; transition:.3s; }
     .testimonial-arrow:hover { background:#f7c600; color:#111; }
@@ -103,7 +105,7 @@
 
     /* Contato */
     .contact-form { max-width:500px; margin:0 auto; display:flex; flex-direction:column; gap:15px; }
-    .contact-form input, .contact-form textarea { padding:12px; border-radius:6px; border:1px solid #ccc; width:100%; }
+    .contact-form input, .contact-form textarea { padding:12px; border-radius:6px; border:1px solid #ccc; width:100%; font-size:1em; }
     .contact-form button { background:#25d366; color:#fff; border:none; padding:15px; font-weight:bold; border-radius:6px; cursor:pointer; transition:.3s; display:flex; align-items:center; justify-content:center; gap:10px; }
     .contact-form button:hover { background:#1ebe57; transform:translateY(-2px); }
 
@@ -112,10 +114,31 @@
     footer a { color:#f7c600; text-decoration:none; display:flex; align-items:center; gap:5px; font-weight:600; }
 
     /* Responsivo */
+    @media(max-width:1024px){
+      header h1 { font-size:1.5em; }
+      .hero-content h2 { font-size:2.5em; }
+      .hero-content p { font-size:1.1em; }
+      .benefit-card { max-width:220px; }
+      .testimonial-card { min-width:220px; }
+    }
+
     @media(max-width:768px){
+      header { flex-direction:column; align-items:flex-start; }
+      nav { width:100%; margin-top:10px; }
+      header nav ul { flex-direction:column; width:100%; gap:8px; padding-top:0; }
+      header nav ul li a { width:100%; text-align:center; }
       .hero-content h2 { font-size:2em; }
       .hero-content p { font-size:1em; }
       .benefits { flex-direction:column; }
+      .testimonial-card { min-width:200px; }
+    }
+
+    @media(max-width:480px){
+      .hero-content h2 { font-size:1.6em; }
+      .hero-content p { font-size:0.9em; }
+      .benefit-card { width:100%; }
+      .testimonial-card { min-width:180px; }
+      .contact-form { width:100%; }
     }
 
     /* Canvas partículas */
@@ -149,10 +172,10 @@
     <div class="container">
       <h2>Nossos Serviços</h2>
       <div class="benefits">
-        <div class="benefit-card"><i></i><h3>Alongamento de Cílios</h3><p>Realce o olhar com técnicas modernas e seguras.</p></div>
-        <div class="benefit-card"><i></i><h3>Design de Sobrancelhas</h3><p>Formas personalizadas que valorizam seu rosto.</p></div>
-        <div class="benefit-card"><i></i><h3>Alongamento de Unhas</h3><p>Unhas impecáveis com técnicas modernas e duradouras.</p></div>
-        <div class="benefit-card"><i></i><h3>Manicure & Pedicure</h3><p>Cuidados completos para mãos e pés sempre perfeitos.</p></div>
+        <div class="benefit-card"><i>💖</i><h3>Alongamento de Cílios</h3><p>Realce o olhar com técnicas modernas e seguras.</p></div>
+        <div class="benefit-card"><i>✨</i><h3>Design de Sobrancelhas</h3><p>Formas personalizadas que valorizam seu rosto.</p></div>
+        <div class="benefit-card"><i>💅</i><h3>Alongamento de Unhas</h3><p>Unhas impecáveis com técnicas modernas e duradouras.</p></div>
+        <div class="benefit-card"><i>👐</i><h3>Manicure & Pedicure</h3><p>Cuidados completos para mãos e pés sempre perfeitos.</p></div>
       </div>
     </div>
   </section>
