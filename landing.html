@@ -47,55 +47,26 @@ header {
   flex-wrap:wrap;
   transition: all 0.3s ease;
 }
-header.scrolled {
-  background: rgba(0,0,0,0.9);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-}
-header h1 { 
-  font-size:1.8em; 
-  font-weight:700; 
-  animation: colorChange 6s infinite alternate;
-}
-@keyframes colorChange {
-  0% { color:#ffb6c1; }
-  50% { color:#ff69b4; }
-  100% { color:#ff1493; }
-}
+header.scrolled { background: rgba(0,0,0,0.9); box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+header h1 { font-size:1.8em; font-weight:700; animation: colorChange 6s infinite alternate; }
+@keyframes colorChange { 0% { color:#ffb6c1; } 50% { color:#ff69b4; } 100% { color:#ff1493; } }
+
 nav { display:flex; flex-wrap:wrap; justify-content:flex-end; width:100%; }
 header nav ul { list-style:none; display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; padding-top:10px; }
 header nav ul li a { color:#fff; text-decoration:none; padding:10px 12px; border-radius:5px; background:rgba(0,0,0,0.3); transition:.3s; font-size:0.95em; }
 header nav ul li a:hover { background:#f7c600; color:#111; }
 
 /* Hamburger */
-.hamburger {
-  display:none;
-  flex-direction:column;
-  cursor:pointer;
-  gap:4px;
-}
-.hamburger div {
-  width:25px;
-  height:3px;
-  background:#fff;
-  transition: all 0.3s;
-}
+.hamburger { display:none; flex-direction:column; cursor:pointer; gap:4px; }
+.hamburger div { width:25px; height:3px; background:#fff; transition: all 0.3s; }
 
 /* Toggle nav em mobile */
 nav.active { display:flex; flex-direction:column; width:100%; }
 nav.active ul { display:flex; flex-direction:column; width:100%; gap:10px; padding-top:10px; }
 
 /* Hero */
-.hero {
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  min-height:100vh; padding:20px; text-align:center;
-  position:relative;
-  background:url('https://images.unsplash.com/photo-1605902711622-cfb43c4430e5?auto=format&fit=crop&w=1470&q=80') center/cover no-repeat;
-  color:#fff;
-}
-.hero::after {
-  content:''; position:absolute; top:0; left:0; width:100%; height:100%;
-  background:rgba(0,0,0,0.4); z-index:0;
-}
+.hero { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; padding:20px; text-align:center; position:relative; background:url('https://images.unsplash.com/photo-1605902711622-cfb43c4430e5?auto=format&fit=crop&w=1470&q=80') center/cover no-repeat; color:#fff; }
+.hero::after { content:''; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); z-index:0; }
 .hero-content { position:relative; z-index:1; max-width:90%; }
 .hero-content h2 { font-size:3em; margin-bottom:20px; text-shadow:2px 2px 10px rgba(0,0,0,0.6); }
 .hero-content p { font-size:1.2em; margin-bottom:30px; text-shadow:1px 1px 6px rgba(0,0,0,0.6); }
@@ -171,11 +142,7 @@ footer a { color:#f7c600; text-decoration:none; display:flex; align-items:center
 
 <header>
   <h1>Studio Thacyana Lopes</h1>
-  <div class="hamburger" id="hamburger">
-    <div></div>
-    <div></div>
-    <div></div>
-  </div>
+  <div class="hamburger" id="hamburger"><div></div><div></div><div></div></div>
   <nav id="nav">
     <ul>
       <li><a href="#hero">Início</a></li>
@@ -234,7 +201,7 @@ footer a { color:#f7c600; text-decoration:none; display:flex; align-items:center
       <input type="text" placeholder="Seu nome" required>
       <input type="email" placeholder="Seu e-mail" required>
       <input type="tel" placeholder="Seu telefone" required>
-      <button type="button" onclick="window.open('https://api.whatsapp.com/send?phone=5562995446258', '_blank')">
+      <button type="button" onclick="fbq('track','Contact'); window.open('https://api.whatsapp.com/send?phone=5562995446258', '_blank')">
         <i class="fab fa-whatsapp"></i> Clique aqui para WhatsApp
       </button>
     </form>
