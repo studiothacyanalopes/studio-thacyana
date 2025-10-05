@@ -32,6 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .eq("data", dataSelecionada);
 
     const agora = new Date();
+    const hoje = agora.toISOString().split("T")[0]; // yyyy-mm-dd
 
     horariosFixos.forEach((hora) => {
       const option = document.createElement("option");
@@ -39,13 +40,15 @@ document.addEventListener("DOMContentLoaded", () => {
       option.textContent = hora;
 
       const [h, m] = hora.split(":").map(Number);
-      const dataHora = new Date(dataSelecionada);
-      dataHora.setHours(h, m, 0, 0);
+      const dataHora = new Date(`${dataSelecionada}T${hora}:00`);
 
       const ocupado = agendamentos?.find((a) => a.hora === hora);
 
-      if (dataHora < agora) {
-        // horário já passou
+      // Bloquear horários
+      if (dataSelecionada < hoje) {
+        option.disabled = true;
+        option.textContent += " (passado)";
+      } else if (dataSelecionada === hoje && dataHora < agora) {
         option.disabled = true;
         option.textContent += " (passado)";
       } else if (ocupado) {
@@ -63,6 +66,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   dataInput.addEventListener("change", renderizarHorarios);
+
+  // Atualizar horários a cada minuto para bloquear automaticamente horários passados de hoje
+  setInterval(() => {
+    if (dataInput.value) renderizarHorarios();
+  }, 60000); // 1 minuto
 
   // ✅ Agendar horário
   form.addEventListener("submit", async (e) => {
@@ -150,7 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderizarHorarios();
   });
 
-  // 🔍 Ver meu agendamento (novo)
+  // 🔍 Ver meu agendamento
   const btnVerHorario = document.getElementById("btn-ver-agendamento");
   btnVerHorario.addEventListener("click", async () => {
     const whatsapp = document.getElementById("whatsapp").value.replace(/\D/g, "");
