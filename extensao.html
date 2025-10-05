@@ -21,6 +21,23 @@
   header h1 { font-size: 3em; margin-bottom: 15px; }
   header p { font-size: 1.3em; }
 
+  /* Studio Thacyana Lopes animado */
+  .studio-name {
+    font-size: 2em;
+    font-weight: bold;
+    animation: colorFade 6s infinite, fadeInOut 6s infinite;
+  }
+
+  @keyframes colorFade {
+    0%, 100% { color: white; }
+    50% { color: gold; }
+  }
+
+  @keyframes fadeInOut {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
   .highlight-bar {
     position: absolute;
     top: 0;
@@ -113,8 +130,8 @@
   .guarantee { background: #fff4f8; padding: 40px 20px; text-align: center; border-radius: 15px; margin: 40px auto; max-width: 800px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
   .guarantee h3 { font-size: 1.8em; color: #ff4d6d; margin-bottom: 15px; }
 
-  footer { text-align: center; padding: 30px 20px; background: #ff85a2; color: #fff; margin-top: 40px; }
-  footer p { font-size: 1em; }
+  footer { text-align: center; padding: 30px 20px; background: #ff85a2; color: #fff; margin-top: 40px; font-size: 0.9em; }
+  footer p { margin-bottom: 5px; }
 
   .highlight { color: #ff4d6d; font-weight: bold; }
 
@@ -127,6 +144,7 @@
   <div class="highlight-bar"></div>
   <h1>Extensão de Cílios: Métodos Inovadores</h1>
   <p>Transforme seu olhar com técnicas profissionais e resultados incríveis!</p>
+  <div class="studio-name">Studio Thacyana Lopes</div>
 </header>
 
 <div class="container">
@@ -181,6 +199,11 @@
   </div>
 
 </div>
+
+<footer>
+  <p>Autoria: Studio Thacyana Lopes</p>
+  <p>Mais de 5 anos transformando olhares com profissionalismo e técnicas inovadoras!</p>
+</footer>
 
 <a href="https://wa.me/556293347287" target="_blank" class="whatsapp-fixed btn-whatsapp">💬 Fale Conosco!</a>
 
