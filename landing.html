@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studio Thacyana Lopes</title>
+  
+  <!-- Meta Pixel -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1979476126159218');
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=1979476126159218&ev=PageView&noscript=1"
+  /></noscript>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <script src="https://kit.fontawesome.com/a81368914c.js" crossorigin="anonymous"></script>
+
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+    body { background:#f4f4f9; color:#333; scroll-behavior: smooth; }
+
+    /* Header */
+    header {
+      position: fixed;
+      top:0;
+      width:100%;
+      background:rgba(0,0,0,0.6);
+      color:#fff;
+      z-index: 999;
+      padding:15px 20px;
+      display:flex;
+      justify-content: space-between;
+      align-items:center;
+      box-shadow:0 2px 6px rgba(0,0,0,0.3);
+    }
+    header h1 { 
+      font-size:1.8em; 
+      font-weight:700; 
+      animation: colorChange 6s infinite alternate;
+    }
+    @keyframes colorChange {
+      0% { color:#ffb6c1; }
+      50% { color:#ff69b4; }
+      100% { color:#ff1493; }
+    }
+    header nav ul { list-style:none; display:flex; gap:15px; }
+    header nav ul li a {
+      color:#fff; text-decoration:none; padding:10px 15px; border-radius:5px;
+      background:rgba(0,0,0,0.3); transition:.3s;
+    }
+    header nav ul li a:hover { background:#f7c600; color:#111; }
+
+    /* Hero */
+    .hero {
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      min-height:100vh; padding:20px; text-align:center;
+      position:relative;
+      background:url('https://images.unsplash.com/photo-1605902711622-cfb43c4430e5?auto=format&fit=crop&w=1470&q=80') center/cover no-repeat;
+      color:#fff;
+    }
+    .hero::after {
+      content:''; position:absolute; top:0; left:0; width:100%; height:100%;
+      background:rgba(0,0,0,0.4); z-index:0;
+    }
+    .hero-content { position:relative; z-index:1; max-width:90%; }
+    .hero-content h2 { font-size:3em; margin-bottom:20px; text-shadow:2px 2px 10px rgba(0,0,0,0.6); }
+    .hero-content p { font-size:1.2em; margin-bottom:30px; text-shadow:1px 1px 6px rgba(0,0,0,0.6); }
+    .btn-primary { background:#f7c600; color:#111; padding:15px 30px; border:none; border-radius:6px; font-weight:bold; cursor:pointer; transition:.3s; }
+    .btn-primary:hover { background:#e6b800; transform:translateY(-3px); }
+
+    /* Seções */
+    section { padding:80px 20px; text-align:center; }
+    .container { max-width:1200px; margin:0 auto; }
+
+    /* Benefícios */
+    .benefits { display:flex; flex-wrap:wrap; gap:30px; justify-content:center; margin-top:40px; }
+    .benefit-card { background:#fff; padding:30px; border-radius:12px; box-shadow:0 10px 25px rgba(0,0,0,0.1); width:250px; transition:.3s; }
+    .benefit-card:hover { transform:translateY(-10px); box-shadow:0 15px 30px rgba(0,0,0,0.2); }
+    .benefit-card i { font-size:2em; margin-bottom:15px; color:#f7c600; }
+
+    /* Depoimentos */
+    .testimonials-container { position:relative; overflow:hidden; max-width:100%; margin-top:40px; }
+    .testimonials { display:flex; gap:20px; scroll-behavior:smooth; overflow-x:auto; padding-bottom:10px; scrollbar-width:none; -ms-overflow-style:none; }
+    .testimonials::-webkit-scrollbar { display:none; }
+    .testimonial-card { background:#222; color:#fff; padding:25px; border-radius:12px; min-width:300px; flex-shrink:0; }
+    .testimonial-card:hover { transform:translateY(-5px); }
+    .testimonial-arrow { position:absolute; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.5); color:#fff; border:none; font-size:1.5em; padding:10px; cursor:pointer; border-radius:50%; z-index:10; transition:.3s; }
+    .testimonial-arrow:hover { background:#f7c600; color:#111; }
+    .testimonial-arrow.left { left:10px; }
+    .testimonial-arrow.right { right:10px; }
+
+    /* Contato */
+    .contact-form { max-width:500px; margin:0 auto; display:flex; flex-direction:column; gap:15px; }
+    .contact-form input, .contact-form textarea { padding:12px; border-radius:6px; border:1px solid #ccc; width:100%; }
+    .contact-form button { background:#25d366; color:#fff; border:none; padding:15px; font-weight:bold; border-radius:6px; cursor:pointer; transition:.3s; display:flex; align-items:center; justify-content:center; gap:10px; }
+    .contact-form button:hover { background:#1ebe57; transform:translateY(-2px); }
+
+    /* Footer */
+    footer { background:#111; color:#fff; padding:20px 0; text-align:center; display:flex; justify-content:center; align-items:center; gap:10px; flex-wrap:wrap; }
+    footer a { color:#f7c600; text-decoration:none; display:flex; align-items:center; gap:5px; font-weight:600; }
+
+    /* Responsivo */
+    @media(max-width:768px){
+      .hero-content h2 { font-size:2em; }
+      .hero-content p { font-size:1em; }
+      .benefits { flex-direction:column; }
+    }
+
+    /* Canvas partículas */
+    #ai-background { position:absolute; top:0; left:0; width:100%; height:100%; z-index:0; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Studio Thacyana Lopes</h1>
+    <nav>
+      <ul>
+        <li><a href="#hero">Início</a></li>
+        <li><a href="#benefits">Serviços</a></li>
+        <li><a href="#testimonials">Depoimentos</a></li>
+        <li><a href="#contact">Contato</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="hero" id="hero">
+    <canvas id="ai-background"></canvas>
+    <div class="hero-content">
+      <h2>Beleza que conecta</h2>
+      <p>Transforme suas unhas com técnicas profissionais e atendimento personalizado.</p>
+      <a href="#contact" class="btn-primary">Agende Agora</a>
+    </div>
+  </div>
+
+  <section id="benefits">
+    <div class="container">
+      <h2>Nossos Serviços</h2>
+      <div class="benefits">
+        <div class="benefit-card"><i></i><h3>Alongamento de Cílios</h3><p>Realce o olhar com técnicas modernas e seguras.</p></div>
+        <div class="benefit-card"><i></i><h3>Design de Sobrancelhas</h3><p>Formas personalizadas que valorizam seu rosto.</p></div>
+        <div class="benefit-card"><i></i><h3>Alongamento de Unhas</h3><p>Unhas impecáveis com técnicas modernas e duradouras.</p></div>
+        <div class="benefit-card"><i></i><h3>Manicure & Pedicure</h3><p>Cuidados completos para mãos e pés sempre perfeitos.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="testimonials">
+    <div class="container">
+      <h2>Depoimentos</h2>
+      <div class="testimonials-container">
+        <button class="testimonial-arrow left">&#8249;</button>
+        <div class="testimonials">
+          <div class="testimonial-card"><p>"Excelente atendimento e resultado incrível!"</p><strong>- Maria S.</strong></div>
+          <div class="testimonial-card"><p>"Recomendo demais, unhas perfeitas!"</p><strong>- Ana P.</strong></div>
+          <div class="testimonial-card"><p>"Ambiente agradável e profissionais super atenciosas."</p><strong>- Camila R.</strong></div>
+          <div class="testimonial-card"><p>"Não largo mais minhas unhas para outro lugar."</p><strong>- Juliana F.</strong></div>
+          <div class="testimonial-card"><p>"Adoro o cuidado e os detalhes do serviço."</p><strong>- Larissa T.</strong></div>
+          <div class="testimonial-card"><p>"Unhas perfeitas e atendimento impecável."</p><strong>- Sofia M.</strong></div>
+          <div class="testimonial-card"><p>"Sempre saio satisfeita, recomendo a todas!"</p><strong>- Bianca C.</strong></div>
+          <div class="testimonial-card"><p>"Profissionais muito competentes e simpáticas."</p><strong>- Fernanda L.</strong></div>
+        </div>
+        <button class="testimonial-arrow right">&#8250;</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="container">
+      <h2>Contato</h2>
+      <form class="contact-form">
+        <input type="text" placeholder="Seu nome" required>
+        <input type="email" placeholder="Seu e-mail" required>
+        <input type="tel" placeholder="Seu telefone" required>
+        <button type="button" onclick="window.open('https://api.whatsapp.com/send?phone=5562995446258', '_blank')">
+          <i class="fab fa-whatsapp"></i> Clique aqui para WhatsApp
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <span>&copy; 2025 Studio Thacyana Lopes</span>
+    <a href="https://www.instagram.com/studiothacyanalopes/" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
+  </footer>
+
+  <script>
+    // Rolagem suave
+    document.querySelectorAll('a[href^="#"]').forEach(anchor=>{
+      anchor.addEventListener('click',function(e){
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({behavior:'smooth'});
+      });
+    });
+
+    // Canvas partículas
+    const canvas = document.getElementById('ai-background');
+    const ctx = canvas.getContext('2d');
+    let particles = [], particleCount = 100;
+    function resizeCanvas(){ const hero=document.querySelector('.hero'); canvas.width=hero.offsetWidth; canvas.height=hero.offsetHeight; }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+    class Particle { constructor(){ this.x=Math.random()*canvas.width; this.y=Math.random()*canvas.height; this.radius=Math.random()*2+1; this.vx=(Math.random()-0.5)*1; this.vy=(Math.random()-0.5)*1; } draw(){ ctx.beginPath(); ctx.arc(this.x,this.y,this.radius,0,Math.PI*2); ctx.fillStyle='#f7c600'; ctx.fill(); } update(){ this.x+=this.vx; this.y+=this.vy; if(this.x<0||this.x>canvas.width)this.vx*=-1; if(this.y<0||this.y>canvas.height)this.vy*=-1; } }
+    function initParticles(){ particles=[]; for(let i=0;i<particleCount;i++)particles.push(new Particle()); }
+    initParticles();
+    function animate(){ ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>{p.update(); p.draw(); }); for(let i=0;i<particles.length;i++){ for(let j=i+1;j<particles.length;j++){ let dx=particles[i].x-particles[j].x; let dy=particles[i].y-particles[j].y; let dist=Math.sqrt(dx*dx+dy*dy); if(dist<100){ ctx.beginPath(); ctx.strokeStyle=`rgba(247,198,0,${1-dist/100})`; ctx.lineWidth=1; ctx.moveTo(particles[i].x,particles[i].y); ctx.lineTo(particles[j].x,particles[j].y); ctx.stroke(); } } } requestAnimationFrame(animate); }
+    animate();
+
+    // Depoimentos scroll com setas
+    const testimonials = document.querySelector('.testimonials');
+    const leftBtn = document.querySelector('.testimonial-arrow.left');
+    const rightBtn = document.querySelector('.testimonial-arrow.right');
+    const scrollAmount = 320;
+    rightBtn.addEventListener('click',()=> { testimonials.scrollBy({ left: scrollAmount, behavior:'smooth' }); });
+    leftBtn.addEventListener('click',()=> { testimonials.scrollBy({ left: -scrollAmount, behavior:'smooth' }); });
+  </script>
+
+</body>
+</html>
